@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template
-import random
+from random import randint
 
 app = Flask(__name__)
 
@@ -124,18 +124,21 @@ def horoscope_results():
     """Shows the user the result for their chosen horoscope."""
 
     # TODO: Get the sign the user entered in the form, based on their birthday
-    horoscope_sign = ''
+    horoscope_sign = request.args.get('horoscope_sign')
+    name = request.args.get('users_name')
 
     # TODO: Look up the user's personality in the HOROSCOPE_PERSONALITIES
     # dictionary based on what the user entered
-    users_personality = ''
+    if horoscope_sign in HOROSCOPE_PERSONALITIES:
+        users_personality = HOROSCOPE_PERSONALITIES[horoscope_sign]
 
     # TODO: Generate a random number from 1 to 99
-    lucky_number = 0
+    lucky_number = randint(1, 99)
 
     context = {
-        'horoscope_sign': horoscope_sign,
-        'personality': users_personality, 
+        'name': name,
+        'horoscope_sign': horoscope_sign, 
+        'personality': users_personality,
         'lucky_number': lucky_number
     }
 
@@ -143,4 +146,4 @@ def horoscope_results():
 
 if __name__ == '__main__':
     app.config['ENV'] = 'development'
-    app.run(debug=True)
+    app.run(debug=True, port=3000)
